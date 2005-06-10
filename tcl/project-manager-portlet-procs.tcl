@@ -99,6 +99,9 @@ namespace eval project_manager_portlet {
         ]
     }
 
+
+
+
     ad_proc -public remove_self_from_page {
 	{-portal_id:required}
         {-project_manager_id:required}
