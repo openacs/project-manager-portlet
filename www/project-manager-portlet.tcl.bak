@@ -1,0 +1,83 @@
+#
+#  Copyright (C) 2005 Cognovis
+#
+#  This file is part of dotLRN.
+#
+#  dotLRN is free software; you can redistribute it and/or modify it under the
+#  terms of the GNU General Public License as published by the Free Software
+#  Foundation; either version 2 of the License, or (at your option) any later
+#  version.
+#
+#  dotLRN is distributed in the hope that it will be useful, but WITHOUT ANY
+#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+#  details.
+#
+
+# www/project-manager-portlet.tcl
+
+ad_page_contract {
+    The display logic for the project manager portlet
+
+    @author Bjoern Kiesbye (kiesbye@theservice.de)
+    @cvs_id $Id: project-manager-portlet.tcl
+} {
+    
+} 
+
+
+# Get stuff from the config
+array set config $cf
+set project_manager_id $config(project_manager_id)
+set package_id $project_manager_id
+
+
+if {$config(project_manager_status_id) == "{}" } {
+
+    set project_manager_status_id ""
+
+} else {
+
+    set project_manager_status_id $config(project_manager_status_id)
+
+}
+
+if {$config(project_manager_action_p) == "{}" } {
+
+    set project_manager_action_p "" 
+
+} else {
+
+    set project_manager_action_p $config(project_manager_action_p)
+
+}
+
+if {$config(project_manager_searchterm) == "{}" } {
+
+    set searchterm ""
+
+} else {
+
+    set searchterm $config(project_manager_searchterm)
+
+}
+
+set searchterm $
+ 
+if { $config(project_manager_orderby) == "{}"} {
+
+    set project_manager_orderby ""
+
+} else {
+
+    set project_manager_orderby $config(project_manager_orderby)
+}
+
+if {$config(project_manager_bulk_p) == "{}"} {
+
+    set project_manager_bulk_p ""
+
+} else { 
+
+
+}
