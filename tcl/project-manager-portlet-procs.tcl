@@ -50,6 +50,7 @@ namespace eval project_manager_portlet {
     ad_proc -public add_self_to_page {
 	{-portal_id:required}
 	{-project_manager_id:required}
+	{-package_id:required}
         {-page_name ""}
         {-pretty_name ""}
         {-force_region ""}
@@ -92,9 +93,9 @@ namespace eval project_manager_portlet {
                     -portlet_name [get_my_name] \
                     -pretty_name $pretty_name \
                     -force_region $force_region \
-                    -key project_manager_id \
-                    -value $project_manager_id \
-                    -param_action $param_action \
+                    -value $package_id \
+		    -key project_manager_id \
+		    -param_action $param_action \
                     -extra_params $extra_params
         ]
     }
@@ -122,6 +123,8 @@ namespace eval project_manager_portlet {
 	 cf
     } {
     } {
+
+	
         portal::show_proc_helper \
             -package_key [my_package_key] \
             -config_list $cf
