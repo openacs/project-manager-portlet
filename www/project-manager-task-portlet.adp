@@ -1,3 +1,3 @@
     <include
       src="/packages/project-manager/lib/tasks"
-      instance_id="@package_id@" display_mode="list"/ base_url="@base_url@">
+       base_url="@base_url@" filters_p="0" display_mode="list">
