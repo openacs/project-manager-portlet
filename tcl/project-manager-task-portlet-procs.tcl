@@ -90,7 +90,8 @@ namespace eval project_manager_task_portlet {
                     -portlet_name [get_my_name] \
                     -pretty_name $pretty_name \
                     -force_region $force_region \
-                    -value $package_id \
+		    -key project_manager_id \
+                    -value $project_manager_id \
                     -param_action $param_action \
                     -extra_params $extra_params
         ]
