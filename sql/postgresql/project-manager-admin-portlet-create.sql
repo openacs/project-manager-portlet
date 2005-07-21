@@ -18,7 +18,7 @@
 -- /project-manager-portlet/sql/oracle/project-manager-portlet-create.sql
 --
 
--- Creates Project Manager portlet
+-- Creates Project Manager Admin portlet
 
 -- Copyright (C) 2005 Cognovis
 -- @author Bjoern Kiesbye (kiesbye@theservice.de)
@@ -35,7 +35,7 @@ declare
   ds_id portal_datasources.datasource_id%TYPE;
 begin
   ds_id := portal_datasource__new(
-         ''project_manager_portlet'',
+         ''project_manager_admin_portlet'',
          ''Displays the Project Manager''
   );
 
@@ -100,7 +100,7 @@ begin
 
   -- Project-Manager-specific params
   
-  -- Project_manager_id must be configured 
+  -- project_manager_admin_id must be configured 
 
      perform portal_datasource__set_def_param (
 	 ds_id,
@@ -109,47 +109,6 @@ begin
 	 ''project_manager_id'',
 	 ''''
       );
-
-     perform portal_datasource__set_def_param (
-	  ds_id,
-	  ''t'',
-	  ''f'',
-	  ''project_manager_orderby'',
-	  ''''
-      );
-
-     perform portal_datasource__set_def_param (
-	ds_id,
-	''t'',
-	''f'',
-	''project_manager_status_id'',
-	''''
-      );
-
-     perform portal_datasource__set_def_param (
-	ds_id,
-	''t'',
-	''f'',
-	''project_manager_searchterm'',
-	''''
-      );
-
-     perform portal_datasource__set_def_param (
-	ds_id,
-	''t'',
-	''f'',
-	''project_manager_bulk_p'',
-	''''
-      );
-
-     perform portal_datasource__set_def_param (
-	ds_id,
-	''t'',
-	''f'',
-	''project_manager_action_p'',
-	''''
-      );
-
 
 
 
@@ -168,8 +127,8 @@ begin
 	-- create the implementation
 	foo := acs_sc_impl__new (
 		''portal_datasource'',
-		''project_manager_portlet'',
-		''project_manager_portlet''
+		''project_manager_admin_portlet'',
+		''project_manager_admin_portlet''
 	);
 
    return 0;
@@ -189,57 +148,57 @@ begin
 	-- add all the hooks
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''GetMyName'',
-	       ''project_manager_portlet::get_my_name'',
+	       ''project_manager_admin_portlet::get_my_name'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''GetPrettyName'',
-	       ''project_manager_portlet::get_pretty_name'',
+	       ''project_manager_admin_portlet::get_pretty_name'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''Link'',
-	       ''project_manager_portlet::link'',
+	       ''project_manager_admin_portlet::link'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''AddSelfToPage'',
-	       ''project_manager_portlet::add_self_to_page'',
+	       ''project_manager_admin_portlet::add_self_to_page'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''Show'',
-	       ''project_manager_portlet::show'',
+	       ''project_manager_admin_portlet::show'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''Edit'',
-	       ''project_manager_portlet::edit'',
+	       ''project_manager_admin_portlet::edit'',
 	       ''TCL''
 	);
 
 	foo := acs_sc_impl_alias__new (
 	       ''portal_datasource'',
-	       ''project_manager_portlet'',
+	       ''project_manager_admin_portlet'',
 	       ''RemoveSelfFromPage'',
-	       ''project_manager_portlet::remove_self_from_page'',
+	       ''project_manager_admin_portlet::remove_self_from_page'',
 	       ''TCL''
 	);
 
@@ -260,7 +219,7 @@ begin
 	-- Add the binding
 	perform acs_sc_binding__new (
 	    ''portal_datasource'',
-	    ''project_manager_portlet''
+	    ''project_manager_admin_portlet''
 	);
 
    return 0;
@@ -270,5 +229,4 @@ select inline_0();
 drop function inline_0();
 
 
-\i project-manager-task-portlet-create.sql
-\i project-manager-admin-portlet-create.sql
+
