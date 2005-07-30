@@ -27,6 +27,18 @@ ad_page_contract {
     project_term_lower:onevalue
 }
 
+# daily?
+set daily_p [parameter::get -parameter "UseDayInsteadOfHour" -default "f"]
+
+#------------------------
+# Check if the project will be handled on daily basis or will show hours and minutes
+#------------------------
+
+set fmt "%x %r"
+if { $daily_p } {
+    set fmt "%x"
+} 
+
 
 array set config $cf
 
