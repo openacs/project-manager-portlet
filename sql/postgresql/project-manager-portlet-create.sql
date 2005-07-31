@@ -273,4 +273,4 @@ drop function inline_0();
 \i project-manager-task-portlet-create.sql
 \i project-manager-admin-portlet-create.sql
 \i project-manager-calendar-portlet-create.sql
-\i project-manager-project-calendar-portlet-create.sql
+\i project-manager-project-calendar-portlet.sql
