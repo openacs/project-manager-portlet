@@ -1,3 +1,8 @@
+ad_page_contract {
+} {
+    {watcher_p 0}
+    {page_num 0}
+} 
 # daily?
 set daily_p [parameter::get -parameter "UseDayInsteadOfHour" -default "f"]
 
@@ -27,5 +32,3 @@ if {![empty_string_p $community_id]} {
     set base_url ""
     set pm_package_id ""
 }
-
-
