@@ -37,69 +37,7 @@
         r.is_lead_p,
 	t.priority,
         p.customer_id,
-        p.title as project_name,
-	ar.object_id_two as logger_project
-	FROM
-	(select tr.item_id,
-                ta.party_id,
-                ta.role_id,
-                tr.title,
-                tr.end_date,
-                tr.earliest_start,
-                tr.earliest_finish,
-                tr.latest_start,
-                tr.latest_finish,
-                tr.percent_complete,
-                tr.estimated_hours_work,
-                tr.estimated_hours_work_min,
-                tr.estimated_hours_work_max,
-                tr.actual_hours_worked,
-                tr.parent_id,
-                tr.revision_id,
-		tr.priority
-         from pm_tasks_revisionsx tr
-         LEFT JOIN
-         pm_task_assignment ta ON tr.item_id = ta.task_id) t 
-           LEFT JOIN 
-           persons u 
-           ON 
-           t.party_id = u.person_id 
-           LEFT JOIN
-           pm_roles r
-           ON t.role_id = r.role_id,  
-        cr_items i 
-           LEFT JOIN 
-           pm_task_dependency d 
-           ON 
-           i.item_id = d.task_id,
-        pm_tasks_active ti,
-        pm_task_status s,
-        pm_projectsx p,
-	acs_rels ar,
-	acs_objects o
-	WHERE
-        t.parent_id     = p.item_id and
-        t.revision_id   = i.live_revision and
-        t.item_id       = ti.task_id and
-        ti.status       = s.status_id
-	$party_where_clause
-	and ar.object_id_one = t.parent_id
-	and ar.rel_type = 'application_data_link'
-	and o.object_id = ar.object_id_two
-	and o.object_type = 'logger_project'
-        and exists (select 1 from acs_object_party_privilege_map ppm
-                    where ppm.object_id = ti.task_id
-                    and ppm.privilege = 'read'
-                    and ppm.party_id = :user_id)
-	$done_clause
-        [template::list::filter_where_clauses -and -name tasks]
-    </querytext>
-</fullquery>
-
-<fullquery name="tasks_pagination">
-    <querytext>
-     select distinct task_item_id from (SELECT
-        t.item_id as task_item_id
+        p.title as project_name
 	FROM
 	(select tr.item_id,
                 ta.party_id,
@@ -150,5 +88,6 @@
         [template::list::filter_where_clauses -and -name tasks]
     </querytext>
 </fullquery>
+
 
 </queryset>

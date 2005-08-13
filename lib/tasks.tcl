@@ -128,7 +128,7 @@ if {![empty_string_p $searchterm]} {
 # Get the rows to display
 
 if {![exists_and_not_null elements]} {
-    set elements [list task_item_id title slack_time role latest_start latest_finish status_type remaining worked project_item_id percent_complete log_url edit_url]
+    set elements [list task_item_id title slack_time role latest_start latest_finish status_type remaining worked project_item_id percent_complete edit_url]
 }
 
 set filters [list \
@@ -204,7 +204,7 @@ foreach element $elements {
 }
 
 if {$bulk_p == 1} {
-    set bulk_actions [list "[_ project-manager.Log_hours]" "${base_url}log-bulk" "[_ project-manager.lt_Log_hours_for_several]" "[_ project-manager.Edit_tasks]" "${base_url}task-add-edit" "[_ project-manager.Edit_multiple_tasks]"]
+    set bulk_actions [list "[_ project-manager.Edit_tasks]" "${base_url}task-add-edit" "[_ project-manager.Edit_multiple_tasks]"]
     set bulk_action_export_vars [list [list return_url]]
 } else {
     set bulk_actions [list]
@@ -313,9 +313,6 @@ template::list::create \
 	    display_template {<a href="@tasks.project_url@">@tasks.project_name@</a>}
 	    hide_p {[ad_decode [exists_and_not_null project_item_id] 1 1 0]}
 	}
-	log_url {
-	    display_template {<a href="@tasks.base_url@@tasks.log_url@">L</a>}
-	}
 	edit_url {
 	    display_template {<a href="@tasks.base_url@@tasks.edit_url@">E</a>}
 	}
@@ -336,10 +333,6 @@ template::list::create \
     -actions $actions \
     -bulk_actions $bulk_actions \
     -bulk_action_export_vars $bulk_action_export_vars \
-    -page_size_variable_p 1 \
-    -page_size $page_size \
-    -page_flush_p 0 \
-    -page_query_name tasks_pagination \
     -html {
 	width 100%
     } \
@@ -357,13 +350,10 @@ template::list::create \
 	}
     }
 
-db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url log_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url} tasks tasks {} {
+db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url} tasks tasks {} {
 
     set item_url [export_vars \
 		      -base "task-one" {{task_id $task_item_id}}]
-
-    set log_url [export_vars \
-		     -base "${logger_url}log" {{project_id $logger_project} {pm_task_id $task_item_id} {pm_project_id $project_item_id} {return_url $return_url}}]
 
     set edit_url [export_vars \
 		      -base "task-add-edit" {{task_id $task_item_id} project_item_id return_url}]
