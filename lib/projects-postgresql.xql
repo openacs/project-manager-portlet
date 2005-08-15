@@ -26,7 +26,7 @@
         to_char(p.latest_finish_date, 'YYYY-MM-DD HH24:MI:SS') as latest_finish_date,
         case when o.name is null then '--no customer--' else o.name
                 end as customer_name,
-        o.organization_id as customer_id
+        o.organization_id as customer_id, f.package_id
         FROM pm_projectsx p 
              LEFT JOIN pm_project_assignment pa 
                 ON p.item_id = pa.project_id
@@ -51,12 +51,13 @@
         WHERE 
         p.project_id = i.live_revision 
 	and i.parent_id = f.folder_id
-        and f.package_id = :package_id 
+        and f.package_id in ($package_ids) 
         and exists (select 1 from acs_object_party_privilege_map ppm 
                     where ppm.object_id = p.project_id
                     and ppm.privilege = 'read'
                     and ppm.party_id = :user_id)
-        [template::list::filter_where_clauses -and -name "projects_${package_id}"]
+        [template::list::filter_where_clauses -and -name "projects"]
+    order by planned_end_date desc
     </querytext>
 </fullquery>
 

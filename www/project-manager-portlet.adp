@@ -23,4 +23,4 @@
 
 
   <link rel="stylesheet" href="style.css" type="text/css" />
-      <include src="../lib/projects" category_id=@pass_cat@ orderby=@orderby;noquote@    elements="customer_name planned_end_date category_id" package_id=@project_manager_id@ actions_p="1" bulk_p="1" assignee_id="" filter_p="0" base_url="@base_url@" fmt=@fmt@>
+      <include src="../lib/projects" category_id=@pass_cat@ orderby=@orderby;noquote@    elements="customer_name planned_end_date category_id" package_id=@project_manager_id@ actions_p="1" bulk_p="0" assignee_id="" filter_p="0" base_url="@base_url@" fmt=@fmt@>
