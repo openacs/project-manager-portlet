@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="project-manager-portlet" package_version="0.4d" locale="en_US" charset="ISO-8859-1">
+
+  <msg key="Administration">Administration</msg>
+  <msg key="lt_Project_Manager_Admin">Project Manager Administration</msg>
+</message_catalog>
