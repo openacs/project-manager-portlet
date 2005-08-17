@@ -39,7 +39,7 @@ namespace eval project_manager_task_portlet {
 
     ad_proc -public get_pretty_name {
     } {
-        return "Project Manager Task Portlet"
+        return "[_ project-manager-portlet.Project_Manager_Task_Portlet]"
     }
 
     ad_proc -public link {

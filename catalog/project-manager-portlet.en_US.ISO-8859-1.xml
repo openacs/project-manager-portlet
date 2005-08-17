@@ -3,4 +3,9 @@
 
   <msg key="Administration">Administration</msg>
   <msg key="lt_Project_Manager_Admin">Project Manager Administration</msg>
+  <msg key="Project_Manager">Project Manager</msg>
+  <msg key="Project_Manager_Calendar_Portlet">Project Manager Calendar Portlet</msg>
+  <msg key="Project_Manager_Portlet">Project Manager Portlet</msg>
+  <msg key="Project_Manager_Project_Calendar_Portlet">Project Manager Project Calendar Portlet</msg>
+  <msg key="Project_Manager_Task_Portlet">Project Manager Task Portlet</msg>
 </message_catalog>

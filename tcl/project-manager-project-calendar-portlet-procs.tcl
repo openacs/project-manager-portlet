@@ -39,7 +39,7 @@ namespace eval project_manager_project_calendar_portlet {
     
     ad_proc -public get_pretty_name {
     } {
-        return "Project Manager Project Calendar Portlet"
+        return "[_ project-manager-portlet.Project_Manager_Project_Calendar_Portlet]"
     }
     
     ad_proc -public link {
