@@ -3,7 +3,7 @@
 # role_id
 
 set required_param_list [list]
-set optional_param_list [list searchterm status_id page bulk_p actions_p base_url]
+set optional_param_list [list searchterm status_id page bulk_p actions_p base_url is_observer_p]
 set optional_unset_list [list party_id role_id project_item_id instance_id]
 
 foreach required_param $required_param_list {
@@ -42,6 +42,11 @@ if ![info exists package_id] {
     set package_id [ad_conn package_id]
 }
 
+if { ![empty_string_p $is_observer_p] } {
+    set extra_query "and pr.is_observer_p = :is_observer_p"
+} else {
+    set extra_query ""
+}
 
 # ---------------------------------------------------------------
 
@@ -128,7 +133,7 @@ if {![empty_string_p $searchterm]} {
 # Get the rows to display
 
 if {![exists_and_not_null elements]} {
-    set elements [list task_item_id title slack_time role latest_start latest_finish status_type remaining worked project_item_id percent_complete edit_url]
+    set elements [list task_item_id title slack_time role latest_start latest_finish planned_end_date status_type remaining worked project_item_id percent_complete edit_url]
 }
 
 set filters [list \
@@ -350,7 +355,18 @@ template::list::create \
 	}
     }
 
+
+set count 0
+set more_p 0
+
+
 db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url} tasks tasks {} {
+
+    incr count
+    if { [string equal $count 26] } {
+	set more_p 1
+	break
+    }
 
     set item_url [export_vars \
 		      -base "task-one" {{task_id $task_item_id}}]

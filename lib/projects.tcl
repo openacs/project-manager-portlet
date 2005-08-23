@@ -34,11 +34,16 @@ if {![info exists format]} {
     set format "normal"
 }
 
-
+set community_id [dotlrn_community::get_community_id]
+if { [empty_string_p $community_id] } {
+    set user_space_p 1
+} else {
+    set user_space_p 0
+}
 
 # --------------------------------------------------------------- #
 
-set _package_id $package_id
+set package_id $package_id
 template::multirow create pm_packages "list_id" "contact_column" "community_name"
 set c_row 0
 
@@ -245,8 +250,16 @@ template::list::create \
         width 100%
     }
 
+set count 0
+set more_p 0
+
 db_multirow -extend { item_url } "projects" project_folders {
 } {
+    incr count
+    if {[string equal $count 26] } {
+	set more_p 1
+	break
+    }
     set earliest_finish_date [lc_time_fmt $earliest_finish_date $fmt]
     set latest_finish_date [lc_time_fmt $latest_finish_date $fmt]
     set item_url [export_vars -base "${base_url}one" {project_item_id}]
@@ -269,7 +282,6 @@ db_multirow -extend { item_url } "projects" project_folders {
         set portal_info_url  [lindex $base_url 0] 
         
     }
-
 }
 
 

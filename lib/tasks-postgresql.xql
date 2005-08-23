@@ -73,12 +73,17 @@
            i.item_id = d.task_id,
         pm_tasks_active ti,
         pm_task_status s,
-        pm_projectsx p
+        pm_projectsx p,
+	pm_task_assignment pa,
+	pm_roles pr
 	WHERE
         t.parent_id     = p.item_id and
         t.revision_id   = i.live_revision and
         t.item_id       = ti.task_id and
         ti.status       = s.status_id
+	and pa.task_id = t.item_id
+	and pa.role_id = pr.role_id
+	$extra_query
 	$party_where_clause
         and exists (select 1 from acs_object_party_privilege_map ppm
                     where ppm.object_id = ti.task_id
@@ -86,6 +91,7 @@
                     and ppm.party_id = :user_id)
 	$done_clause
         [template::list::filter_where_clauses -and -name tasks]
+	order by end_date desc
     </querytext>
 </fullquery>
 

@@ -1,7 +1,20 @@
 <if @display_mode@ eq "list">
   <listtemplate name="tasks">
   </listtemplate>
+  <if @more_p@ eq 1>
+     <br>
+     <if @instance_id@ not nil>
+        <center><a class="button" href="project-manager/tasks?instance_id=@instance_id@">#project-manager-portlet.More#</a></center>
+      </if>
+      <else>
+	    <center>
+                 <a class="button" href="project-manager/tasks?is_observer_p=f">#project-manager-portlet.More#</a>
+            </center>
+      </else>
+     <br>
+   </if>
 </if>
+
 <if @display_mode@ eq "filter">
   <form method="post" name="search" action="tasks">
     #project-manager.Search#<br />
@@ -30,3 +43,10 @@
     </tr>
   </table>
 </if>
+<br>
+<a href="?page_num=@page_num@&is_observer_p=t" class="button">#project-manager-portlet.my_tasks#</a> |
+<a href="?page_num=@page_num@&is_observer_p=f" class="button">#project-manager-portlet.pool_tasks#</a>
+<if @is_observer_p@ not nil>
+	<small><a href="?page_num=@page_num@">(#project-manager-portlet.clear#)</a></small>
+</if>
+<br><br>
