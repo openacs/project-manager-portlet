@@ -4,9 +4,6 @@ ad_page_contract {
     @author Bjoern Kiesbye (kiesbye@theservice.de)
     @cvs_id $Id: project-manager-portlet.tcl
 } {
-    
- 
-
     orderby:optional
     {status_id:integer,optional}
     {searchterm ""}
@@ -105,17 +102,8 @@ if {$config(project_manager_bulk_p) == "{}"} {
     set bulk_p $config(project_manager_bulk_p)
 }
 
-if {[exists_and_not_null category_id]} {
-    set temp_category_id $category_id
-    set pass_cat $category_id
-} else {
-    set temp_category_id ""
-    set pass_cat ""
-}
-
-
 # --------------------------------------------------------------- #
 
-set exporting_vars { status_id category_id assignee_id orderby format }
+set exporting_vars { status_id assignee_id orderby format }
 set hidden_vars [export_vars -form $exporting_vars]
 
