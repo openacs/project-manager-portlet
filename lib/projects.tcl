@@ -44,7 +44,6 @@ if { [empty_string_p $community_id] } {
 # --------------------------------------------------------------- #
 
 set package_id $package_id
-template::multirow create pm_packages "list_id" "contact_column" "community_name"
 set c_row 0
 
 set exporting_vars { status_id category_id assignee_id format }
@@ -129,9 +128,6 @@ if {[empty_string_p $contacts_url]} {
 # Store project names and all other project individuel data
 set contact_coloum "fff" 
 
-template::multirow append pm_packages "projects" "$contact_column" 
-
-ns_log notice "projects = projects c_row=$c_row\n [template::multirow get pm_packages 1 list_id] , [template::multirow columns pm_packages] , [template::multirow size pm_packages]"
 incr c_row
 
 # Get the rows to display
@@ -161,7 +157,7 @@ if {$actions_p == 1} {
     }
     
 } else {
-    set actions [list "Project: $community_name" "$base_url"]
+    set actions [list]
 }
 
 template::list::create \
@@ -253,15 +249,13 @@ template::list::create \
 set count 0
 set more_p 0
 
-db_multirow -extend { item_url } "projects" project_folders {
+db_multirow -extend { item_url customer_name } "projects" project_folders {
 } {
     incr count
     if {[string equal $count 26] } {
 	set more_p 1
 	break
     }
-    set earliest_finish_date [lc_time_fmt $earliest_finish_date $fmt]
-    set latest_finish_date [lc_time_fmt $latest_finish_date $fmt]
     set item_url [export_vars -base "${base_url}one" {project_item_id}]
     set _base_url [site_node::get_url_from_object_id -object_id $package_id]
     
@@ -282,6 +276,7 @@ db_multirow -extend { item_url } "projects" project_folders {
         set portal_info_url  [lindex $base_url 0] 
         
     }
+    set customer_name [contact::name -party_id $customer_id]
 }
 
 
