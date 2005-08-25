@@ -171,11 +171,6 @@ foreach element $elements {
     # We need to filter by the user if a party_id is given
     if {[exists_and_not_null party_id]} {
 	set party_where_clause "and t.party_id = :party_id"
-
-	# Do we want to show observer tasks as well?
-	if {[parameter::get -parameter "ShowObserverTasksP"] == 0} {
-	    append party_where_clause "\n and r.is_observer_p = 'f' "
-	}
     } else {
 	set party_where_clause ""
     }

@@ -44,8 +44,8 @@
   </table>
 </if>
 <br>
-<a href="?page_num=@page_num@&is_observer_p=t" class="button">#project-manager-portlet.my_tasks#</a> |
-<a href="?page_num=@page_num@&is_observer_p=f" class="button">#project-manager-portlet.pool_tasks#</a>
+<a href="?page_num=@page_num@&is_observer_p=f" class="button">#project-manager-portlet.my_tasks#</a> |
+<a href="?page_num=@page_num@&is_observer_p=t" class="button">#project-manager-portlet.pool_tasks#</a>
 <if @is_observer_p@ not nil>
 	<small><a href="?page_num=@page_num@">(#project-manager-portlet.clear#)</a></small>
 </if>

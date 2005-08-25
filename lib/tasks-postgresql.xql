@@ -26,8 +26,6 @@
         u.first_names,
         u.last_name,
         t.percent_complete,
-        d.parent_task_id,
-        d.dependency_type,
         t.estimated_hours_work,
         t.estimated_hours_work_min,
         t.estimated_hours_work_max,
@@ -36,7 +34,6 @@
         s.description as status_description,
         r.is_lead_p,
 	t.priority,
-        p.customer_id,
         p.title as project_name
 	FROM
 	(select tr.item_id,
@@ -56,9 +53,8 @@
                 tr.parent_id,
                 tr.revision_id,
 		tr.priority
-         from pm_tasks_revisionsx tr
-         LEFT JOIN
-         pm_task_assignment ta ON tr.item_id = ta.task_id) t 
+         from pm_tasks_revisionsx tr, pm_task_assignment ta, pm_roles pr
+         where ta.task_id = tr.item_id and ta.role_id = pr.role_id $extra_query) t
            LEFT JOIN 
            persons u 
            ON 
@@ -66,24 +62,15 @@
            LEFT JOIN
            pm_roles r
            ON t.role_id = r.role_id,  
-        cr_items i 
-           LEFT JOIN 
-           pm_task_dependency d 
-           ON 
-           i.item_id = d.task_id,
+        cr_items i, 
         pm_tasks_active ti,
         pm_task_status s,
-        pm_projectsx p,
-	pm_task_assignment pa,
-	pm_roles pr
+        pm_projectsx p
 	WHERE
         t.parent_id     = p.item_id and
         t.revision_id   = i.live_revision and
         t.item_id       = ti.task_id and
         ti.status       = s.status_id
-	and pa.task_id = t.item_id
-	and pa.role_id = pr.role_id
-	$extra_query
 	$party_where_clause
         and exists (select 1 from acs_object_party_privilege_map ppm
                     where ppm.object_id = ti.task_id

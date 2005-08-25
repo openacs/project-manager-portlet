@@ -10,6 +10,8 @@ ad_page_contract {
     category_id:multiple,optional
     {format "normal"}
     {assignee_id ""}
+    {is_observer_p ""}
+    {page_num 0}
     
 } -properties {
 

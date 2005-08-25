@@ -6,7 +6,7 @@
 # @cvs-id $Id$
 
 set required_param_list [list package_id]
-set optional_param_list [list status_id searchterm bulk_p action_p filter_p base_url end_date_f]
+set optional_param_list [list status_id searchterm bulk_p action_p filter_p base_url end_date_f is_observer_p]
 set optional_unset_list [list assignee_id date_range]
 
 foreach required_param $required_param_list {
@@ -37,13 +37,18 @@ if {![info exists format]} {
 set community_id [dotlrn_community::get_community_id]
 if { [empty_string_p $community_id] } {
     set user_space_p 1
+    set extra_role_tables "pm_project_assignment pa,pm_roles pr,"
+    set extra_role_where_clause "	and pa.project_id = p.item_id
+	and pa.role_id = pr.role_id
+	and pa.party_id = :user_id"
 } else {
     set user_space_p 0
+    set extra_role_tables ""
+    set extra_role_where_clause ""
 }
 
 # --------------------------------------------------------------- #
 
-set package_id $package_id
 set c_row 0
 
 set exporting_vars { status_id category_id assignee_id format }
@@ -54,6 +59,14 @@ set context [list]
 
 # the unique identifier for this package
 set user_id    [ad_maybe_redirect_for_registration]
+
+# Filter for observers
+
+if { ![empty_string_p $is_observer_p] } {
+    set extra_query "and pr.is_observer_p = '$is_observer_p'"
+} else {
+    set extra_query ""
+}
 
 # Projects, using list-builder ---------------------------------
 
@@ -256,12 +269,13 @@ db_multirow -extend { item_url customer_name } "projects" project_folders {
 	set more_p 1
 	break
     }
-    set item_url [export_vars -base "${base_url}one" {project_item_id}]
     set _base_url [site_node::get_url_from_object_id -object_id $package_id]
     
     if {![empty_string_p $_base_url]} {
         set base_url $_base_url
     }
+
+    set item_url [export_vars -base "${base_url}one" {project_item_id}]
     # root CR folder
     #set root_folder [pm::util::get_root_folder -package_id $package_id]
     set community_id [dotlrn_community::get_community_id_from_url \

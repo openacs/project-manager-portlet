@@ -4,7 +4,7 @@
 
   <fullquery name="project_folders">
     <querytext>
-        SELECT
+        select * from (SELECT distinct
         p.item_id as project_item_id,
         p.project_id,
 	p.status_id,
@@ -17,13 +17,16 @@
         p.customer_id as customer_id, f.package_id
         FROM pm_projectsx p, 
         cr_items i, 
+	$extra_role_tables
 	cr_folders f
         WHERE 
         p.project_id = i.live_revision 
 	and i.parent_id = f.folder_id
-        and f.package_id in ($package_ids) 
-        and exists (select 1 from acs_object_party_privilege_map ppm 
-                    where ppm.object_id = p.project_id
+	$extra_role_where_clause
+	$extra_query
+        and f.package_id in ($package_ids)) proj
+        where exists (select 1 from acs_object_party_privilege_map ppm 
+                    where ppm.object_id = proj.project_id
                     and ppm.privilege = 'read'
                     and ppm.party_id = :user_id)
         [template::list::filter_where_clauses -and -name "projects"]
