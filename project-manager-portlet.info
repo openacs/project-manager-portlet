@@ -7,7 +7,7 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>f</singleton-p>
     
-    <version name="0.4d4" url="http://openacs.org/repository/download/apm/project-manager-portlet-0.4d4.apm">
+    <version name="0.4d5" url="http://openacs.org/repository/download/apm/project-manager-portlet-0.4d5.apm">
         <owner url="mailto:kiesbye@theservice.de">Bjoern Kiesbye</owner>
         <owner url="mailto:sussdorff@sussdorff.org">Malte Sussdorff</owner>
         <summary>Portlet for the Project Manager.</summary>
@@ -15,7 +15,7 @@
         <description format="text/plain">Portlet for the Project Manager.</description>
         <maturity>0</maturity>
 
-        <provides url="project-manager-portlet" version="0.4d4"/>
+        <provides url="project-manager-portlet" version="0.4d5"/>
         <requires url="project-manager" version="3.0d5"/>
 
         <callbacks>
