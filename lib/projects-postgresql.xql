@@ -24,7 +24,7 @@
 	and i.parent_id = f.folder_id
 	$extra_role_where_clause
 	$extra_query
-        and f.package_id in ($package_ids)) proj
+	) proj
         where exists (select 1 from acs_object_party_privilege_map ppm 
                     where ppm.object_id = proj.project_id
                     and ppm.privilege = 'read'

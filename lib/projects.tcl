@@ -35,16 +35,22 @@ if {![info exists format]} {
 }
 
 set community_id [dotlrn_community::get_community_id]
+
+#ad_return_complaint 1 $package_ids
+
 if { [empty_string_p $community_id] } {
     set user_space_p 1
     set extra_role_tables "pm_project_assignment pa,pm_roles pr,"
-    set extra_role_where_clause "	and pa.project_id = p.item_id
+    set extra_role_where_clause "
+	and pa.project_id = p.item_id
 	and pa.role_id = pr.role_id
-	and pa.party_id = :user_id"
+        and 1 = ( select 1 from dual where pa.party_id = :user_id or :user_id in ( select object_id_two from acs_rels where object_id_one = pa.party_id
+                 and rel_type = 'membership_rel'))
+        "
 } else {
     set user_space_p 0
     set extra_role_tables ""
-    set extra_role_where_clause ""
+    set extra_role_where_clause "and f.package_id in ($package_ids)"
 }
 
 # --------------------------------------------------------------- #

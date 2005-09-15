@@ -170,7 +170,8 @@ foreach element $elements {
 
     # We need to filter by the user if a party_id is given
     if {[exists_and_not_null party_id]} {
-	set party_where_clause "and t.party_id = :party_id"
+	set party_where_clause "and 1 = ( select 1 from dual where t.party_id = :user_id or :user_id in ( 
+                                        select object_id_two from acs_rels where object_id_one = t.party_id and rel_type = 'membership_rel'))"
     } else {
 	set party_where_clause ""
     }
@@ -255,7 +256,7 @@ template::list::create \
 	}
         party_id {
             label "[_ project-manager.Who]"
-            display_template {<group column="task_item_id"> <if @tasks.person_id@ eq @tasks.my_user_id@> <span class="selected"> </if> <if @tasks.is_lead_p@><i></if> <a href="@tasks.base_url@@tasks.user_url@">@tasks.first_names@ @tasks.last_name@</a> <if @tasks.is_lead_p@></i></if> <if @tasks.person_id@ eq @tasks.my_user_id@> </span> </if> <br> </group>
+            display_template {<group column="task_item_id"> <if @tasks.party_id@ eq @tasks.my_user_id@> <span class="selected"> </if> <if @tasks.is_lead_p@><i></if> <a href="@tasks.base_url@@tasks.user_url@">@tasks.name@</a> <if @tasks.is_lead_p@></i></if> <if @tasks.party_id@ eq @tasks.my_user_id@> </span> </if> <br> </group>
             }
 	}
 	role {
@@ -321,8 +322,8 @@ template::list::create \
 	}
         last_name {
             label "[_ project-manager.Who]"
-            display_template {<group column="task_item_id"> <if @tasks.person_id@ eq @tasks.my_user_id@> <span class="selected"> </if> <if @tasks.is_lead_p@><i></if>
-		@tasks.first_names@&nbsp;@tasks.last_name@ <if @tasks.is_lead_p@></i></if> <if @tasks.person_id@ eq @tasks.my_user_id@> </span> </if> <br> </group>
+            display_template {<group column="task_item_id"> <if @tasks.party_id@ eq @tasks.my_user_id@> <span class="selected"> </if> <if @tasks.is_lead_p@><i></if>
+		@tasks.name@ <if @tasks.is_lead_p@></i></if> <if @tasks.party_id@ eq @tasks.my_user_id@> </span> </if> <br> </group>
             }
 	}
     } \
@@ -354,8 +355,31 @@ template::list::create \
 set count 0
 set more_p 0
 
+# We ge the package_id of the pm instance to get the value of the parameter
 
-db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url} tasks tasks {} {
+set pm_package_id [dotlrn_community::get_package_id_from_package_key \
+		       -package_key "project-manager" \
+		       -community_id [dotlrn_community::get_community_id]]
+
+set assign_group_p [parameter::get -parameter "AssignGroupP" -default 0 -package_id $pm_package_id]
+
+db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url name} tasks tasks {} {
+    
+    if { $assign_group_p } {
+        # We are going to show all asignees including groups
+        if { [catch {set name [person::name -person_id $party_id] } err] } {
+            # person::name give us an error so its probably a group so we get
+	    # the title
+            set name [group::title -group_id $party_id]
+        }
+    } else {
+        if { [catch {set name [person::name -person_id $party_id] } err] } {
+            # person::name give us an error so its probably a group, here we don't want
+            # to show any group so we just continue the multirow
+            continue
+        }
+    }
+
 
     incr count
     if { [string equal $count 26] } {
@@ -415,7 +439,7 @@ db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_d
     }
     set my_user_id $user_id
     set user_url [export_vars \
-		      -base "${contacts_url}contact" {{party_id $person_id}}]
+		      -base "${contacts_url}contact" {{party_id $party_id}}]
 
     acs_object::get -object_id $task_item_id -array task_array
     set base_url [lindex [site_node::get_url_from_object_id -object_id $task_array(package_id)] 0]
