@@ -60,6 +60,7 @@ set c_row 0
 set exporting_vars { status_id category_id assignee_id format }
 set hidden_vars [export_vars -form $exporting_vars]
 
+
 # set up context bar
 set context [list]
 
@@ -78,10 +79,11 @@ if { ![empty_string_p $is_observer_p] } {
 
 # Set status
 if {![exists_and_not_null status_id]} {
-    set status_where_clause ""
+    set default_closed [pm::project::default_status_closed]
+    set status_where_clause {proj.status_id <> :default_closed}
     set status_id ""
 } else {
-    set status_where_clause {p.status_id = :status_id}
+    set status_where_clause {proj.status_id = :status_id}
 }
 
 # We want to set up a filter for each category tree.
