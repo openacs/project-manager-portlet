@@ -4,8 +4,7 @@
 
 <fullquery name="tasks">
     <querytext>
-	SELECT distinct
-        t.item_id as task_item_id,
+	SELECT        t.item_id as task_item_id,
         t.parent_id as project_item_id,
         t.title,
 	to_char(t.end_date,'YYYY-MM-DD HH24:MI:SS') as end_date,
@@ -33,7 +32,7 @@
 	t.is_observer_p,
 	t.priority,
 	t.party_id,
-        p.title as project_name
+        o.title as project_name
 	FROM
 	(select tr.item_id,
                 ta.party_id,
@@ -54,17 +53,26 @@
 		pr.is_observer_p,
 		tr.priority, 
 		pr.is_lead_p
-         from pm_tasks_revisionsx tr, pm_task_assignment ta, pm_roles pr
-         where ta.task_id = tr.item_id and ta.role_id = pr.role_id $extra_query $done_clause) t,
-        cr_items i, 
+           from pm_tasks_revisionsx tr, pm_task_assignment ta, cr_items ci, pm_roles pr,
+	-- Select only tasks where you are participating in a certain role.
+	 	(select distinct task_id from pm_task_assignment where party_id = :party_id) my_tasks
+           where ta.task_id = tr.item_id 
+	-- We need to join again with the role, as we are supposed to get all the participants
+	-- This is not good... We should probably get them in the TCL view..
+           and ta.role_id = pr.role_id
+	   and ci.live_revision = tr.revision_id and
+	   tr.item_id = my_tasks.task_id
+	   $extra_query
+ 	   $done_clause) t,
         pm_tasks_active ti,
         pm_task_status s,
-        pm_projectsx p
+	cr_items cp,
+	acs_objects o
 	WHERE
-        t.parent_id     = p.item_id and
-        t.revision_id   = i.live_revision and
+        t.parent_id     = cp.item_id and
         t.item_id       = ti.task_id and
         ti.status       = s.status_id
+	and cp.live_revision = o.object_id
 	$party_where_clause
         and exists (select 1 from acs_object_party_privilege_map ppm
                     where ppm.object_id = ti.task_id
