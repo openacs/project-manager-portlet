@@ -2,7 +2,7 @@ ad_page_contract {
 } {
     {watcher_p 0}
     {page_num 0}
-    {is_observer_p ""}
+    {is_observer_p "f"}
 } 
 # daily?
 set daily_p [parameter::get -parameter "UseDayInsteadOfHour" -default "f"]

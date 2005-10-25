@@ -29,7 +29,8 @@
         t.actual_hours_worked,
         s.status_type,
         s.description as status_description,
-        r.is_lead_p,
+        t.is_lead_p,
+	t.is_observer_p,
 	t.priority,
 	t.party_id,
         p.title as project_name
@@ -50,12 +51,11 @@
                 tr.actual_hours_worked,
                 tr.parent_id,
                 tr.revision_id,
-		tr.priority
+		pr.is_observer_p,
+		tr.priority, 
+		pr.is_lead_p
          from pm_tasks_revisionsx tr, pm_task_assignment ta, pm_roles pr
-         where ta.task_id = tr.item_id and ta.role_id = pr.role_id $extra_query) t
-           LEFT JOIN
-           pm_roles r
-           ON t.role_id = r.role_id,  
+         where ta.task_id = tr.item_id and ta.role_id = pr.role_id $extra_query $done_clause) t,
         cr_items i, 
         pm_tasks_active ti,
         pm_task_status s,
@@ -70,7 +70,6 @@
                     where ppm.object_id = ti.task_id
                     and ppm.privilege = 'read'
                     and ppm.party_id = :user_id)
-	$done_clause
         [template::list::filter_where_clauses -and -name tasks]
 	order by end_date desc
     </querytext>

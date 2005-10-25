@@ -42,7 +42,7 @@ if ![info exists package_id] {
     set package_id [ad_conn package_id]
 }
 
-if { ![empty_string_p $is_observer_p] } {
+if { $is_observer_p == "f" } {
     set extra_query "and pr.is_observer_p = :is_observer_p"
 } else {
     set extra_query ""
@@ -57,7 +57,7 @@ set hide_done_tasks_p [parameter::get \
 			   -parameter "HideDoneTaskP" -default "1"]
 
 if {$hide_done_tasks_p} {
-    set done_clause "and t.percent_complete < 100"
+    set done_clause "and tr.percent_complete < 100"
 } else {
     set done_clause ""
 }
@@ -168,13 +168,14 @@ foreach element $elements {
     }
 
 
+##### maltes: Why on earth do we need this query?
     # We need to filter by the user if a party_id is given
-    if {[exists_and_not_null party_id]} {
-	set party_where_clause "and 1 = ( select 1 from dual where t.party_id = :user_id or :user_id in ( 
-                                        select object_id_two from acs_rels where object_id_one = t.party_id and rel_type = 'membership_rel'))"
-    } else {
+#    if {[exists_and_not_null party_id]} {
+#	set party_where_clause "and 1 = ( select 1 from dual where t.party_id = :user_id or :user_id in ( 
+#                                        select object_id_two from acs_rels where object_id_one = t.party_id and rel_type = 'membership_rel'))"
+#    } else {
 	set party_where_clause ""
-    }
+#    }
 
 
     # If we display the items of a single user, show the role. Otherwise
@@ -238,6 +239,7 @@ template::list::create \
         }
 	title {
 	    label "[_ project-manager.Subject_1]"
+	    display_template {<if @tasks.is_observer_p@ eq "f"><font color="green">@tasks.title@</font></if><else>@tasks.title@</else>}
 	}
         parent_task_id {
             label "[_ project-manager.Dep]"
