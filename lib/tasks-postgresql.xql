@@ -55,7 +55,7 @@
 		pr.is_lead_p
            from pm_tasks_revisionsx tr, pm_task_assignment ta, cr_items ci, pm_roles pr,
 	-- Select only tasks where you are participating in a certain role.
-	 	(select distinct task_id from pm_task_assignment where party_id = :party_id) my_tasks
+	 	(select distinct task_id from pm_task_assignment where party_id = :user_id) my_tasks
            where ta.task_id = tr.item_id 
 	-- We need to join again with the role, as we are supposed to get all the participants
 	-- This is not good... We should probably get them in the TCL view..
@@ -83,5 +83,15 @@
     </querytext>
 </fullquery>
 
+<fullquery name="get_assignee_name">
+    <querytext>
+        select
+                username
+        from
+                users
+        where
+                user_id = :party_id
+    </querytext>
+</fullquery>
 
 </queryset>

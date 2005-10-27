@@ -26,7 +26,6 @@ foreach optional_unset $optional_unset_list {
     }
 }
 
-
 if ![info exists page_size] {
     set page_size 25
 }
@@ -368,22 +367,38 @@ set pm_package_id [dotlrn_community::get_package_id_from_package_key \
 		       -community_id [dotlrn_community::get_community_id]]
 
 set assign_group_p [parameter::get -parameter "AssignGroupP" -default 0 -package_id $pm_package_id]
+set user_instead_full_p [parameter::get -parameter "UsernameInsteadofFullnameP" -default "f" -package_id $pm_package_id]
+
 
 db_multirow -extend {item_url earliest_start_pretty earliest_finish_pretty end_date_pretty latest_start_pretty latest_finish_pretty slack_time edit_url hours_remaining days_remaining actual_days_worked my_user_id user_url base_url task_close_url project_url name} tasks tasks {} {
     
     if { $assign_group_p } {
         # We are going to show all asignees including groups
-        if { [catch {set name [person::name -person_id $party_id] } err] } {
-            # person::name give us an error so its probably a group so we get
-	    # the title
-            set name [group::title -group_id $party_id]
-        }
+	if { $user_instead_full_p } {
+            set name [db_string get_assignee_name { } -default ""]
+            if { [empty_string_p $name] } {
+                set name [group::title -group_id $party_id]
+            }
+        } else {
+	    if { [catch {set name [person::name -person_id $party_id] } err] } {
+		# person::name give us an error so its probably a group so we get
+		# the title
+		set name [group::title -group_id $party_id]
+	    }
+	}
     } else {
-        if { [catch {set name [person::name -person_id $party_id] } err] } {
-            # person::name give us an error so its probably a group, here we don't want
-            # to show any group so we just continue the multirow
-            continue
-        }
+	if { $user_instead_full_p } {
+            set name [db_string get_assignee_name {  } -default ""]
+            if { [empty_string_p $name] } {
+                continue
+            }
+        } else {
+	    if { [catch {set name [person::name -person_id $party_id] } err] } {
+		# person::name give us an error so its probably a group, here we don't want
+		# to show any group so we just continue the multirow
+		continue
+	    }
+	}
     }
 
 
