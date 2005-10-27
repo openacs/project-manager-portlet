@@ -26,6 +26,7 @@ foreach optional_unset $optional_unset_list {
     }
 }
 
+
 if ![info exists page_size] {
     set page_size 25
 }
@@ -152,9 +153,12 @@ set filters [list \
 				      where_clause "t.parent_id = :project_item_id"
 				 ] \
 		 instance_id [list \
-				  where_clause "p.object_package_id = :instance_id"
+				  where_clause "o.package_id = :instance_id"
 			     ] \
 		]
+
+
+
 
 foreach element $elements {
 
