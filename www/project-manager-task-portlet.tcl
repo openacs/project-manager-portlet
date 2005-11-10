@@ -2,11 +2,12 @@ ad_page_contract {
 } {
     {watcher_p 0}
     {page_num 0}
-    {is_observer_p "f"}
+    {is_observer_filter ""}
+    {filter_party_id ""}
 } 
 # daily?
 set daily_p [parameter::get -parameter "UseDayInsteadOfHour" -default "f"]
-
+set user_id [ad_conn user_id]
 #------------------------
 # Check if the project will be handled on daily basis or will show hours and minutes
 #------------------------
