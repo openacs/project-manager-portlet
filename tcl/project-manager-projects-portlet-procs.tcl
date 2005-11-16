@@ -104,4 +104,33 @@ namespace eval project_manager_projects_portlet {
             -template_src "project-manager-projects-portlet"		
     }
 
+    ad_proc -public add_to_all_portals { } {
+	
+	Add the Project Manager Projects Portlet to all	portals that have a template_id ( This means that they are
+	a user, club, class or subcommunity portals). Here we use a package_id equal to 0 since we don't
+	care about the pm_instance_id since the portlet doesn't make use of it.
+
+	@author Miguel Marin (miguelmarin@viaro.net)
+	@author Viaro Networks www.viaro.net
+	@creation-date 2005-11-16
+
+    } {
+	
+	# We get all portals
+	set all_portals [db_list get_all_portals {
+	    select
+	            portal_id
+	    from
+	            portals
+	    where
+	            template_id is not null
+	}]
+
+	foreach portal_id $all_portals {
+	    project_manager_projects_portlet::add_self_to_page \
+		-portal_id $portal_id \
+		-project_manager_id 0 \
+		-package_id 0
+	}
+    } 
 }
