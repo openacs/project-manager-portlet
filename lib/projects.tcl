@@ -139,11 +139,12 @@ if {[exists_and_not_null date_range] } {
 ##############################################
 
 # Get url of the contacts package if it has been mounted for the links on the index page.
-set contacts_url [util_memoize [list site_node::get_package_url -package_key contacts]]
+# set contacts_url [util_memoize [list site_node::get_package_url -package_key contacts]]
+set contacts_url "/contacts/"
 if {[empty_string_p $contacts_url]} {
     set contact_column "@projects.customer_name@"
 } else {
-    set contact_column "<a href=\"${contacts_url}contact?party_id=@projects.customer_id@\">@projects.customer_name@</a>"
+    set contact_column "<a href=\"${contacts_url}@projects.customer_id@\">@projects.customer_name@</a>"
 }
 
 # Store project names and all other project individuel data
