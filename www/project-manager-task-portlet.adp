@@ -1,5 +1,5 @@
 <include src="/packages/project-manager/lib/tasks" 
-	filter_party_id="@filter_party_id@" 
+	party_id="@filter_party_id@" 
 	base_url="@base_url@" 
 	instance_id="@pm_package_id@"
 	display_mode="list" 
