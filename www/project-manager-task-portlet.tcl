@@ -31,7 +31,7 @@ if {![empty_string_p $community_id]} {
 } else {
     
     # We assume that project-manager is always mounted under /dotlrn/project-manager if we deal with .LRN
-    set elements "project_item_id task_item_id title end_date"
+    set elements "project_item_id task_item_id title end_date estimated_hours_work_max"
     set party_id [ad_conn user_id]
     set base_url "/dotlrn/project-manager/"
     set pm_package_id ""
