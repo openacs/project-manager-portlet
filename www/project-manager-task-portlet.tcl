@@ -2,7 +2,7 @@ ad_page_contract {
 } {
     {watcher_p 0}
     {page_num 0}
-    {is_observer_filter ""}
+    {is_observer_filter "m"}
     {filter_party_id ""}
 } 
 # daily?
@@ -27,11 +27,11 @@ if {![empty_string_p $community_id]} {
     set base_url "project-manager/"
     set pm_package_id [dotlrn_community::get_package_id_from_package_key -package_key "project-manager" -community_id $community_id]
     set party_id ""
-    set elements "project_item_id task_item_id title role end_date"
+    set elements "project_item_id task_item_id title role end_date last_name"
 } else {
     
     # We assume that project-manager is always mounted under /dotlrn/project-manager if we deal with .LRN
-    set elements "project_item_id task_item_id title end_date estimated_hours_work_max"
+    set elements "project_item_id task_item_id title end_date estimated_hours_work_max last_name"
     set party_id [ad_conn user_id]
     set base_url "/dotlrn/project-manager/"
     set pm_package_id ""
