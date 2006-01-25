@@ -15,5 +15,5 @@
 
 <br>
 <a href="?page_num=@page_num@&is_observer_filter=f&filter_party_id=@user_id@" class="button">#project-manager-portlet.my_tasks#</a> |
-<a href="?page_num=@page_num@&is_observer_filter=" class="button">#project-manager-portlet.pool_tasks#</a>
+<a href="?page_num=@page_num@&is_observer_filter=t" class="button">#project-manager-portlet.pool_tasks#</a>
 <br><br>
