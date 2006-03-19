@@ -1,4 +1,4 @@
-<include src="/packages/project-manager/lib/tasks" 
+<include src="@tasks_portlet@" 
 	party_id="@filter_party_id@" 
 	base_url="@base_url@" 
 	instance_id="@pm_package_id@"
@@ -9,7 +9,7 @@
 	page_num="@page_num@" 
 	is_observer_filter="@is_observer_filter@"
 	status_id="1"
-	orderby_p="0"
+	orderby_p="1"
 	bulk_actions_p="1"
 	tasks_portlet_p="t">
 
