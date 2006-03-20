@@ -23,4 +23,4 @@
 
 
   <link rel="stylesheet" href="style.css" type="text/css" />
-      <include src="../lib/projects" orderby=@orderby;noquote@    elements="customer_name planned_end_date" package_id=@project_manager_id@ actions_p="0" bulk_p="0" assignee_id="" filter_p="0" base_url="@base_url@" fmt=@fmt@ is_observer_p="@is_observer_p@" page_num="@page_num@">
+      <include src="../lib/projects" orderby=@orderby;noquote@    elements="customer_name planned_end_date" package_id=@project_manager_id@ actions_p="0" bulk_p="0" assignee_id="" filter_p="0" base_url="@base_url@" fmt=@fmt@ is_observer_p="@is_observer_p@" page_num="@page_num@" status_id="@status_ids@">

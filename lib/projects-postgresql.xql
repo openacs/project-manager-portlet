@@ -14,14 +14,12 @@
         p.project_code,
         to_char(p.planned_end_date, 'YYYY-MM-DD HH24:MI:SS') as planned_end_date,
         p.ongoing_p,
-        p.customer_id as customer_id, f.package_id
-        FROM pm_projectsx p, 
-        cr_items i, 
+        p.customer_id as customer_id, p.object_package_id as package_id
+        FROM pm_projectsx p,
 	$extra_role_tables
-	cr_folders f
-        WHERE 
+        cr_items i
+        WHERE
         p.project_id = i.live_revision 
-	and i.parent_id = f.folder_id
 	$extra_role_where_clause
 	$extra_query
 	) proj

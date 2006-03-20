@@ -50,7 +50,7 @@ if { [empty_string_p $community_id] } {
 } else {
     set user_space_p 0
     set extra_role_tables ""
-    set extra_role_where_clause "and f.package_id in ($package_ids)"
+    set extra_role_where_clause "and p.object_package_id in ($package_ids)"
 }
 
 # --------------------------------------------------------------- #
@@ -78,12 +78,12 @@ if { ![empty_string_p $is_observer_p] } {
 # Projects, using list-builder ---------------------------------
 
 # Set status
-if {![exists_and_not_null status_id]} {
+if {![exists_and_not_null status_id] } {
     set default_closed [pm::project::default_status_closed]
     set status_where_clause {proj.status_id <> :default_closed}
     set status_id ""
 } else {
-    set status_where_clause {proj.status_id = :status_id}
+    set status_where_clause "proj.status_id in ([join $status_id ,])"
 }
 
 # We want to set up a filter for each category tree.
@@ -220,6 +220,7 @@ template::list::create \
 	}
 	planned_end_date {
 	    label "[_ project-manager.Planned_end_date]"
+            display_template "@projects.planned_end_date_lc@"
 	}
     } \
     -actions $actions \
@@ -268,10 +269,17 @@ template::list::create \
         width 100%
     }
 
+if {[lsearch -exact $row_list project_status] == -1} {
+    set project_status_p 0
+} else {
+    set project_status_p 1
+}
+
 set count 0
 set more_p 0
+set fmt "[lc_get d_fmt] %X"
 
-db_multirow -extend { item_url customer_name } "projects" project_folders {
+db_multirow -extend { item_url customer_name planned_end_date_lc project_status } "projects" project_folders {
 } {
     incr count
     if {[string equal $count 26] } {
@@ -283,6 +291,8 @@ db_multirow -extend { item_url customer_name } "projects" project_folders {
     if {![empty_string_p $_base_url]} {
         set base_url $_base_url
     }
+
+    set planned_end_date_lc [lc_time_fmt $planned_end_date $fmt]
 
     set item_url [export_vars -base "${base_url}one" {project_item_id}]
     # root CR folder
@@ -300,6 +310,11 @@ db_multirow -extend { item_url customer_name } "projects" project_folders {
         
     }
     set customer_name [contact::name -party_id $customer_id]
+    set project_status [pm::project::get_status_description -project_item_id $project_item_id]
+
+    if {!$project_status_p} {
+	set project_name "[string index [lang::util::localize $project_status] 0]-$project_name"
+    }
 }
 
 

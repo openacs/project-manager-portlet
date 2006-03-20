@@ -4,6 +4,7 @@ ad_page_contract {
     {page_num 0}
     {is_observer_filter "m"}
     {filter_party_id ""}
+    {filter_group_id ""}
 } 
 # daily?
 set daily_p [parameter::get -parameter "UseDayInsteadOfHour" -default "f"]
@@ -20,6 +21,11 @@ if { $daily_p } {
 array set config $cf
 
 set community_id [dotlrn_community::get_community_id_from_url]
+
+##############
+# should be callback here
+##############
+set group_id [group::get_id -group_name Freelancer]
 
 if {![empty_string_p $community_id]} {
 

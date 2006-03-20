@@ -8,4 +8,12 @@
       </querytext>
 </fullquery>
 
+<fullquery name="get_all_open_states">
+      <querytext>
+    select status_id
+    from pm_project_status
+    where status_type = 'o'
+      </querytext>
+</fullquery>
+
 </queryset>
