@@ -27,6 +27,8 @@ set community_id [dotlrn_community::get_community_id_from_url]
 ##############
 set group_id [group::get_id -group_name Freelancer]
 
+set tasks_portlet [parameter::get_from_package_key -package_key project-manager-portlet -parameter TasksPortlet]
+
 if {![empty_string_p $community_id]} {
 
     # We are in a community, so we can (savely?) assume that project-manager is mounted under project-manager
@@ -42,5 +44,3 @@ if {![empty_string_p $community_id]} {
     set base_url "/dotlrn/project-manager/"
     set pm_package_id ""
 }
-
-set tasks_portlet [parameter::get_from_package_key -package_key project-manager-portlet -parameter TasksPortlet] 
