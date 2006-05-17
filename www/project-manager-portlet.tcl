@@ -38,6 +38,7 @@ if { $daily_p } {
     set fmt "%x"
 } 
 
+set projects_portlet [parameter::get_from_package_key -package_key project-manager-portlet -parameter ProjectsPortlet]
 
 array set config $cf
 
