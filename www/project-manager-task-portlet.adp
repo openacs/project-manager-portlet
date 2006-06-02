@@ -11,7 +11,7 @@
 	is_observer_filter="@is_observer_filter@"
 	status_id="1"
 	orderby_p="1"
-        orderby="end_date,asc"
+        orderby="@orderby@"
 	bulk_actions_p="1"
 	tasks_portlet_p="t">
 

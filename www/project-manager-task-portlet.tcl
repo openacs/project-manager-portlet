@@ -1,5 +1,6 @@
 ad_page_contract {
 } {
+    {orderby "end_date,asc"}
     {watcher_p 0}
     {page_num 0}
     {is_observer_filter "m"}
