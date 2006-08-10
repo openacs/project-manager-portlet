@@ -284,7 +284,7 @@ db_multirow -extend { item_url customer_name planned_end_date_lc project_status 
     incr count
     if {[string equal $count 26] } {
 	set more_p 1
-	break
+	# break
     }
     set _base_url [site_node::get_url_from_object_id -object_id $package_id]
     

@@ -1,6 +1,6 @@
 ad_page_contract {
 } {
-    {orderby "end_date,asc"}
+    {tasks_orderby "end_date,asc"}
     {watcher_p 0}
     {page_num 0}
     {is_observer_filter "m"}
@@ -40,7 +40,7 @@ if {![empty_string_p $community_id]} {
 } else {
     
     # We assume that project-manager is always mounted under /dotlrn/project-manager if we deal with .LRN
-    set elements "project_item_id task_item_id title end_date estimated_hours_work_max last_name"
+    set elements "project_item_id task_item_id title priority end_date estimated_hours_work_max last_name"
     set party_id [ad_conn user_id]
     set base_url "/dotlrn/project-manager/"
     set pm_package_id ""

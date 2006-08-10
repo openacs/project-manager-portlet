@@ -111,3 +111,4 @@ set exporting_vars { status_id assignee_id orderby format }
 set hidden_vars [export_vars -form $exporting_vars]
 
 set status_ids [db_list get_all_open_states {}]
+set status_ids 1
