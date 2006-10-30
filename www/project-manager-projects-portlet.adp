@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="/resources/project-manager/style.css" type="text/css" />
 <include src="/packages/project-manager/lib/all-party-projects"
 	format="@format@"
 	show_filters_p="@show_filters_p@"
