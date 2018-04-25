@@ -159,7 +159,7 @@ if {$bulk_p == 1} {
     set bulk_actions [list "[_ project-manager.Close]" "@{base_url}/bulk-close" "[_ project-manager.Close_project]" ] 
 } else {
     set row_list "project_name {}\n"     
-    set bulk_actions [list]
+    set bulk_actions {}
 }
 
 foreach element $elements {
@@ -179,7 +179,7 @@ if {$actions_p == 1} {
     }
     
 } else {
-    set actions [list]
+    set actions {}
 }
 
 template::list::create \
