@@ -43,7 +43,7 @@ set exporting_vars { status_id category_id assignee_id orderby format }
 set hidden_vars [export_vars -form $exporting_vars]
 
 # set up context bar
-set context [list]
+set context {}
 
 # the unique identifier for this package
 #set package_id [ad_conn package_id]

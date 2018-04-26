@@ -62,7 +62,7 @@ set hidden_vars [export_vars -form $exporting_vars]
 
 
 # set up context bar
-set context [list]
+set context {}
 
 # the unique identifier for this package
 set user_id    [ad_maybe_redirect_for_registration]
