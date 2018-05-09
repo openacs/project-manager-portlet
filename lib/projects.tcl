@@ -62,7 +62,7 @@ set hidden_vars [export_vars -form $exporting_vars]
 
 
 # set up context bar
-set context {}
+set context [list]
 
 # the unique identifier for this package
 set user_id    [ad_maybe_redirect_for_registration]
@@ -159,7 +159,7 @@ if {$bulk_p == 1} {
     set bulk_actions [list "[_ project-manager.Close]" "@{base_url}/bulk-close" "[_ project-manager.Close_project]" ] 
 } else {
     set row_list "project_name {}\n"     
-    set bulk_actions {}
+    set bulk_actions [list]
 }
 
 foreach element $elements {
@@ -179,7 +179,7 @@ if {$actions_p == 1} {
     }
     
 } else {
-    set actions {}
+    set actions [list]
 }
 
 template::list::create \

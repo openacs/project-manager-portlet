@@ -212,15 +212,15 @@ if {$bulk_p == 1} {
     set bulk_actions [list "[_ project-manager.Edit_tasks]" "${base_url}task-add-edit" "[_ project-manager.Edit_multiple_tasks]"]
     set bulk_action_export_vars [list [list return_url]]
 } else {
-    set bulk_actions {}
-    set bulk_action_export_vars {}
+    set bulk_actions [list]
+    set bulk_action_export_vars [list]
 }
 
 if {$actions_p == 1} {
     set actions [list "[_ project-manager.Add_task]" [export_vars \
 							  -base "${base_url}task-select-project" {return_url}] "[_ project-manager.Add_a_task]"]
 } else {
-    set actions {}
+    set actions [list]
 }
 
 template::list::create \
